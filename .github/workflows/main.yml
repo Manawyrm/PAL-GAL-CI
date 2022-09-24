@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: jed
-          path: *.jed
+          path: "*.jed"
 
   release:
     runs-on: ubuntu-latest
