@@ -21,8 +21,9 @@ jobs:
           cd "$(realpath "$GITHUB_WORKSPACE")"
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get -y install wine-stable wine32:i386 xvfb
+          sudo apt-get -y install wine-stable wine32:i386 libwine:i386 xvfb
           Xvfb :0 -screen 0 1024x768x16 &
+          export DISPLAY=:0.0
           cd toolchain
           wine cupl.exe -j -m2 -u cupl.dl POST.PLD
 
