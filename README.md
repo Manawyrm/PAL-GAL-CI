@@ -1,4 +1,4 @@
-CI for PAL/GAL developmenmt
+CI for PAL/GAL development
 ====================================
 
 This repo contains an example CI GitHub Actions workflow,
