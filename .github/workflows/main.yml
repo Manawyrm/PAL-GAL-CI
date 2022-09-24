@@ -16,20 +16,26 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v2
 
-      - name: Prepare and run build
+      - name: Fix Microsofts 32bit bullshit
         run: |
-          cd "$(realpath "$GITHUB_WORKSPACE")"
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
           sudo dpkg --add-architecture i386
           sudo apt update -qq
           sudo apt-get install -yqq --allow-downgrades libgd3/focal libpcre2-8-0/focal libpcre2-16-0/focal libpcre2-32-0/focal libpcre2-posix2/focal
           sudo apt-get purge -yqq libmono* moby* mono* php* libgdiplus libpcre2-posix3 libzip4
+
+      - name: Install dependencies
+        run: |
           sudo apt update -qq
           sudo apt install -yqq wine-stable xvfb
           Xvfb :0 -screen 0 1024x768x16 &
           export DISPLAY=:0.0
+
+      - name: Run CUPL
+        run: |
+          cd "$(realpath "$GITHUB_WORKSPACE")"
           cd toolchain
-          wine cupl.exe -j -m2 -u cupl.dl POST.PLD
+          wine cupl.exe -j -m2 -u cupl.dl ../POST.PLD
 
       - name: Upload JED files
         uses: actions/upload-artifact@v3
