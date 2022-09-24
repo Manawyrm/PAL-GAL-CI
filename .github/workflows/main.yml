@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  create: { }
+  push: { }
+  pull_request: { }
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      pkgfile: ${{ steps.pkgname.outputs.pkgfile }}
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Prepare and run build
+        run: |
+          cd "$(realpath "$GITHUB_WORKSPACE")"
+          sudo apt-get update
+          sudo apt-get -y install wine
+          cd toolchain
+          wine cupl.exe -j -m2 -u cupl.dl POST.PLD
+
+      - name: Upload JED files
+        uses: actions/upload-artifact@v3
+        with:
+          name: jed
+          path: *.jed
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Download package
+        uses: actions/download-artifact@v1
+        with:
+          name: jed
+          path: .
+
+      # Upload actual release
+      # build job is likely to take more than an hour, secrets.GITHUB_TOKEN would have expired
+      - name: Release build artifacts
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            jed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

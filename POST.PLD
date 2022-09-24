@@ -1,0 +1,68 @@
+Name      POST;
+Partno    ;
+Date      2/6/98;
+Revision  0;
+Designer  Pascal Dornier;
+Company   PC Engines;
+Assembly  POST.2A;
+Location  U2,U3;
+Device    G16V8A;
+
+/** Inputs **/
+
+pin 1 	= !post;	/* POST write strobe / clock */
+pin 2	= nc1;
+pin 3	= nc2;
+pin 4	= nc3;
+pin 5	= nc4;
+pin 6	= xd0;		/* bus data */
+pin 7	= xd1;
+pin 8	= xd2;
+pin 9 	= xd3;
+pin 11	= !oe;		/* output enable */
+
+pin 10	= gnd;
+pin 20	= vcc;
+
+/**  Outputs  **/
+
+pin 13	= !d;		/* LED segments */
+pin 14	= !e;	
+pin 15	= !f;
+pin 16	= !g;
+pin 17	= !a;
+pin 18	= !b;
+pin 19	= !c;
+
+/**  Logic Equations  **/
+
+x0	= !xd3 & !xd2 & !xd1 & !xd0;
+x1	= !xd3 & !xd2 & !xd1 &  xd0;
+x2	= !xd3 & !xd2 &  xd1 & !xd0;
+x3	= !xd3 & !xd2 &  xd1 &  xd0;
+x4	= !xd3 &  xd2 & !xd1 & !xd0;
+x5	= !xd3 &  xd2 & !xd1 &  xd0;
+x6	= !xd3 &  xd2 &  xd1 & !xd0;
+x7	= !xd3 &  xd2 &  xd1 &  xd0;
+x8	=  xd3 & !xd2 & !xd1 & !xd0;
+x9	=  xd3 & !xd2 & !xd1 &  xd0;
+xa	=  xd3 & !xd2 &  xd1 & !xd0;
+xb	=  xd3 & !xd2 &  xd1 &  xd0;
+xc	=  xd3 &  xd2 & !xd1 & !xd0;
+xd	=  xd3 &  xd2 & !xd1 &  xd0;
+xe	=  xd3 &  xd2 &  xd1 & !xd0;
+xf	=  xd3 &  xd2 &  xd1 &  xd0;
+
+a.d	= x0 # x4 # x5 # x6 # x8 # x9 #xa # xb # xc # xe # xf;
+
+b.d	= x0 # x2 # x6 # x8 # xa # xb # xc # xd # xe # xf;
+
+c.d	= x0 # x2 # x3 # x5 # x6 # x8 # x9 # xb # xc # xd # xe;
+
+d.d	= x0 # x1 # x3 # x4 # x5 # x6 # x7 # x8 # x9 # xa # xb # xd;
+
+e.d	= x0 # x1 # x2 # x3 # x4 # x7 # x8 # x9 # xa # xd;
+
+f.d	= x0 # x2 # x3 # x5 # x6 # x7 # x8 # x9 # xa # xc # xe # xf;
+
+g.d	= x2 # x3 # x4 # x5 # x6 # x8 # x9 # xa # xb # xd # xe # xf;
