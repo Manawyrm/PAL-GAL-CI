@@ -21,6 +21,7 @@ jobs:
           cd "$(realpath "$GITHUB_WORKSPACE")"
           sudo dpkg --add-architecture i386
           sudo apt update
+          sudo apt dist-upgrade -y
           sudo apt -y install --install-recommends wine-stable wine32:i386 xvfb
           Xvfb :0 -screen 0 1024x768x16 &
           export DISPLAY=:0.0
